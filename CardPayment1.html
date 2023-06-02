@@ -1,27 +1,37 @@
-<div id="smart-button-container">
-      <div style="text-align: center;">
-        <div style="margin-bottom: 1.25rem;">
-       <p style="font-family:fantasy; font-size:48px; margin-top: 50px;" >WoW Service</p>
-    
-         <select id="item-options" style="font-size:24px; font-weight:600; margin-bottom:36px;"><option value="1" price="27">1 - 27 EUR</option></select>
-          <p style="font-family:fantasy; font-size:15px; margin-top: 15px;" >Handling fee: 5% </p>
-          <select style="display:none;" id="quantitySelect"></select>
-        </div>
-      <div id="paypal-button-container"></div>
-      </div>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PayPal and Debit/Credit card payment</title>
+</head>
+<body>
+
+<div id="smart-button-container" style="display: flex; justify-content: center;">
+  <div style="text-align: center;">
+    <div style="margin-bottom: 1.25rem;">
+      <p style="font-family: fantasy; font-size: 48px; margin-top: 50px;">WoW Service</p>
+
+      <select id="item-options" style="font-size: 24px; font-weight: 600; margin-bottom: 36px;">
+        <option value="1" price="45">1 - 45 EUR</option>
+      </select>
+      <p style="font-family: fantasy; font-size: 15px; margin-top: 15px;">Handling fee: 5% </p>
+      <select style="display: none;" id="quantitySelect"></select>
     </div>
-    <script src="https://www.paypal.com/sdk/js?client-id=AY9mUcF0n1Hs5tVyae-xlWI0Lao5C1IPX6CWrxnJY4n1zoIFlLvzuMYyCjEu4asOZNeLoSvw8CDl6mpE&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
-    <script>
-      function initPayPalButton() {
-        var shipping = 0;
-        var itemOptions = document.querySelector("#smart-button-container #item-options");
+    <div id="paypal-button-container"></div>
+  </div>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AY9mUcF0n1Hs5tVyae-xlWI0Lao5C1IPX6CWrxnJY4n1zoIFlLvzuMYyCjEu4asOZNeLoSvw8CDl6mpE&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
+<script>
+  function initPayPalButton() {
+    var shipping = 0;
+    var itemOptions = document.querySelector("#smart-button-container #item-options");
     var quantity = parseInt();
     var quantitySelect = document.querySelector("#smart-button-container #quantitySelect");
     if (!isNaN(quantity)) {
       quantitySelect.style.visibility = "visible";
     }
     var orderDescription = 'WoW Service';
-    if(orderDescription === '') {
+    if (orderDescription === '') {
       orderDescription = 'Item';
     }
     paypal.Buttons({
@@ -29,14 +39,13 @@
         shape: 'pill',
         color: 'gold',
         layout: 'vertical',
-        label: 'paypal',
-        
+        label: 'paypal'
       },
       createOrder: function(data, actions) {
         var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
         var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
-        var tax = (5 === 0 || false) ? 0 : (selectedItemPrice * (parseFloat(5)/100));
-        if(quantitySelect.options.length > 0) {
+        var tax = (5 === 0 || false) ? 0 : (selectedItemPrice * (parseFloat(5) / 100));
+        if (quantitySelect.options.length > 0) {
           quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
         } else {
           quantity = 1;
@@ -57,15 +66,15 @@
               breakdown: {
                 item_total: {
                   currency_code: 'EUR',
-                  value: itemTotalValue,
+                  value: itemTotalValue
                 },
                 shipping: {
                   currency_code: 'EUR',
-                  value: shipping,
+                  value: shipping
                 },
                 tax_total: {
                   currency_code: 'EUR',
-                  value: tax,
+                  value: tax
                 }
               }
             },
@@ -73,7 +82,7 @@
               name: selectedItemDescription,
               unit_amount: {
                 currency_code: 'EUR',
-                value: selectedItemPrice,
+                value: selectedItemPrice
               },
               quantity: quantity
             }]
@@ -82,7 +91,7 @@
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(orderData) {
-          
+
           // Full available details
           console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
 
@@ -92,7 +101,6 @@
           element.innerHTML = '<h3 style="font-family:fantasy; font-size:48px; margin-top: 50px;">Thank you for your payment!</h3>';
 
           // Or go to another URL:  actions.redirect('thank_you.html');
-
         });
       },
       onError: function(err) {
@@ -101,4 +109,7 @@
     }).render('#paypal-button-container');
   }
   initPayPalButton();
-    </script>
+</script>
+
+</body>
+</html>
