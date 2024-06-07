@@ -11,9 +11,9 @@
       <p style="font-family: fantasy; font-size: 48px; margin-top: 50px;">WoW Service</p>
 
       <select id="item-options" style="font-size: 24px; font-weight: 600; margin-bottom: 36px;">
-        <option value="1" price="79">1 - 79 EUR</option>
+        <option value="1" price="99">1 - 99 EUR</option>
       </select>
-      <p style="font-family: fantasy; font-size: 15px; margin-top: 15px;">Handling fee: 6.5% </p>
+      <p style="font-family: fantasy; font-size: 15px; margin-top: 15px;">Handling fee: 6% </p>
       <select style="display: none;" id="quantitySelect"></select>
     </div>
     <div id="paypal-button-container"></div>
@@ -44,7 +44,7 @@
       createOrder: function(data, actions) {
         var selectedItemDescription = itemOptions.options[itemOptions.selectedIndex].value;
         var selectedItemPrice = parseFloat(itemOptions.options[itemOptions.selectedIndex].getAttribute("price"));
-        var tax = (6.5=== 0 || false) ? 0 : (selectedItemPrice * (parseFloat(6.5) / 100));
+        var tax = (6=== 0 || false) ? 0 : (selectedItemPrice * (parseFloat(6) / 100));
         if (quantitySelect.options.length > 0) {
           quantity = parseInt(quantitySelect.options[quantitySelect.selectedIndex].value);
         } else {
